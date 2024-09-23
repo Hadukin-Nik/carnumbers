@@ -1,10 +1,6 @@
 package ru.hniapplications.testapplication.carnumbersapi.services;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
@@ -15,10 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class NumbersServiceTest {
     @MockBean
     private NumberRepository numberRepository;
@@ -33,7 +29,7 @@ class NumbersServiceTest {
     }
 
     @Test
-    void getAllNumbers() {
+    void get_all_numbers() {
         //Arrange
         List<CarNumber> expectedList = new ArrayList<>();
         expectedList.add(new CarNumber("СВА", 399));
