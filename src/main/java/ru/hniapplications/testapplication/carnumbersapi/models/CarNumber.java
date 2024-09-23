@@ -5,33 +5,40 @@ import lombok.Getter;
 import lombok.ToString;
 import ru.hniapplications.testapplication.carnumbersapi.models.dtos.CarNumberDTO;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ToString
 @Getter
-
 @EqualsAndHashCode
-public class CarNumber implements Comparable<CarNumber> {
+public class CarNumber {
     private final List<Character> letters;
 
     private int[] stringCodePart;
     private int integerCodePart;
 
-    private CarNumber() {
+    public CarNumber() {
         letters = new ArrayList<>();
 
         letters.addAll(Arrays.asList('А', 'В', 'Е', 'К', 'М', 'Н', 'О', 'Р', 'С', 'Т', 'У', 'Х'));
 
         Collections.sort(letters);
+
+        Random random = new Random();
+
+        integerCodePart = random.nextInt(1000);
+
+        stringCodePart = new int[3];
+        stringCodePart[0] = random.nextInt(letters.size());
+        stringCodePart[1] = random.nextInt(letters.size());
+        stringCodePart[2] = random.nextInt(letters.size());
     }
+
     private CarNumber(int[] stringCodePart, int integerCodePart) {
         this();
         this.stringCodePart = stringCodePart;
         this.integerCodePart = integerCodePart;
     }
+
     public CarNumber(String sign, int integerCodePart) {
         this();
         this.stringCodePart = new int[3];
@@ -62,39 +69,35 @@ public class CarNumber implements Comparable<CarNumber> {
     }
 
 
-    @Override
-    public int compareTo(CarNumber o) {
-        if (stringCodePart.equals(o.stringCodePart)) {
-            return Integer.compare(integerCodePart, o.integerCodePart);
-        } else {
-            for (int i = 0; i < stringCodePart.length; i++) {
-                if (stringCodePart[i] > o.stringCodePart[i]) {
-                    return 1;
-                } else if (stringCodePart[i] < o.stringCodePart[i]) {
-                    return -1;
-                }
-            }
-            return 0;
-        }
-    }
-
     public CarNumber next() {
         if (integerCodePart == 999) {
             int[] newStringCodePart = Arrays.copyOf(stringCodePart, stringCodePart.length);
 
             int i = stringCodePart.length - 1;
-            newStringCodePart[i] ++;
+            newStringCodePart[i]++;
             for (; i > 0 && newStringCodePart[i] >= letters.size(); i--) {
                 newStringCodePart[i] = 0;
-                newStringCodePart[i - 1] ++;
+                newStringCodePart[i - 1]++;
             }
 
-            if(newStringCodePart[0] >= letters.size()) {
+            if (newStringCodePart[0] >= letters.size()) {
                 newStringCodePart[0] = 0;
             }
             return new CarNumber(newStringCodePart, 0);
         } else {
             return new CarNumber(stringCodePart, integerCodePart + 1);
+        }
+    }
+
+
+    public boolean isNear(CarNumber carNumber) {
+        CarNumber nextThis = next();
+        CarNumber nextThat = carNumber.next();
+
+        if (nextThis.equals(carNumber) || nextThat.equals(this)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -109,6 +112,6 @@ public class CarNumber implements Comparable<CarNumber> {
         String ansString = stringBuilder.toString();
         String ansInteger = String.format("%03d", integerCodePart);
 
-        return "" + ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2) + " 116 RUS";
+        return "" + ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2);
     }
 }
