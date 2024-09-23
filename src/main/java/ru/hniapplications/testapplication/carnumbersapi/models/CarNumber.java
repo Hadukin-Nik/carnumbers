@@ -2,12 +2,10 @@ package ru.hniapplications.testapplication.carnumbersapi.models;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 import ru.hniapplications.testapplication.carnumbersapi.models.dtos.CarNumberDTO;
 
 import java.util.*;
 
-@ToString
 @Getter
 @EqualsAndHashCode
 public class CarNumber {
@@ -41,7 +39,6 @@ public class CarNumber {
 
     public CarNumber(String sign, int integerCodePart) {
         this();
-        this.stringCodePart = new int[3];
         stringCodePart[0] = letters.indexOf(sign.charAt(0));
         stringCodePart[1] = letters.indexOf(sign.charAt(1));
         stringCodePart[2] = letters.indexOf(sign.charAt(2));
@@ -53,7 +50,6 @@ public class CarNumber {
         this();
         String sign = carNumberDTO.getStringCode();
 
-        stringCodePart = new int[3];
         stringCodePart[0] = letters.indexOf(sign.charAt(0));
         stringCodePart[1] = letters.indexOf(sign.charAt(4));
         stringCodePart[2] = letters.indexOf(sign.charAt(5));
