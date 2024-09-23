@@ -23,7 +23,7 @@ public class NumbersService {
     }
 
     public CarNumber next() {
-        if(lastCarNumber == null) {
+        if (lastCarNumber == null) {
             return random();
         }
 
@@ -46,7 +46,7 @@ public class NumbersService {
     public void init() {
         List<CarNumber> carNumbers = getAllNumbers();
 
-        for(CarNumber carNumber : carNumbers) {
+        for (CarNumber carNumber : carNumbers) {
             carNumberTreeSet.addCarNumber(carNumber);
         }
 

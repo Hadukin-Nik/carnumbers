@@ -1,7 +1,6 @@
 package ru.hniapplications.testapplication.carnumbersapi.models.structures;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;

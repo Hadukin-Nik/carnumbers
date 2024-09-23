@@ -17,9 +17,13 @@ public class NumberController {
 
     @GetMapping("/next")
     public String next() {
-        List<CarNumber> allNumbers = numbersService.getAllNumbers();
-        String numbers = allNumbers.toString();
-        return numbers;
+        CarNumber carNumber = numbersService.next();
+        return carNumber.toString()+" 116 RUS";
+    }
+    @GetMapping("/random")
+    public String random() {
+        CarNumber carNumber = numbersService.random();
+        return carNumber.toString()+" 116 RUS";
     }
 }
 

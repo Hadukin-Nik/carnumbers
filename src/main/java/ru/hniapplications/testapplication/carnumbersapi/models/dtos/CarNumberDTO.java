@@ -2,7 +2,6 @@ package ru.hniapplications.testapplication.carnumbersapi.models.dtos;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
 
 
 @Builder
