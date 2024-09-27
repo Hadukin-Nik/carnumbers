@@ -10,7 +10,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CarNumberTreeSetElement implements Comparable {
+public class CarNumberServiceElement implements Comparable {
     public enum Type {
         L, R, LR
     }
@@ -20,7 +20,7 @@ public class CarNumberTreeSetElement implements Comparable {
 
 
     public int compareTo(Object o) {
-        if ((o instanceof CarNumberTreeSetElement obj)) {
+        if ((o instanceof CarNumberServiceElement obj)) {
             int[] stringCodePart = value.getStringCodePart();
             int integerCodePart = value.getIntegerCodePart();
 
@@ -45,7 +45,7 @@ public class CarNumberTreeSetElement implements Comparable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof CarNumberTreeSetElement o) {
+        if (obj instanceof CarNumberServiceElement o) {
             return this.getValue().equals(o.getValue());
         } else {
             return false;

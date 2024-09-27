@@ -2,13 +2,14 @@ package ru.hniapplications.testapplication.carnumbersapi.models;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import ru.hniapplications.testapplication.carnumbersapi.models.dtos.CarNumberDTO;
+import ru.hniapplications.testapplication.carnumbersapi.models.entities.CarNumberEntity;
 
 import java.util.*;
 
 @Getter
 @EqualsAndHashCode
 public class CarNumber {
+    private final String constStringCodePart = "116 RUS";
     private final List<Character> letters;
 
     private int[] stringCodePart;
@@ -46,9 +47,9 @@ public class CarNumber {
         this.integerCodePart = integerCodePart;
     }
 
-    public CarNumber(CarNumberDTO carNumberDTO) {
+    public CarNumber(CarNumberEntity carNumberEntity) {
         this();
-        String sign = carNumberDTO.getStringCode();
+        String sign = carNumberEntity.getStringCode();
 
         stringCodePart[0] = letters.indexOf(sign.charAt(0));
         stringCodePart[1] = letters.indexOf(sign.charAt(4));
@@ -108,6 +109,6 @@ public class CarNumber {
         String ansString = stringBuilder.toString();
         String ansInteger = String.format("%03d", integerCodePart);
 
-        return "" + ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2);
+        return "" + ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2) + " " + constStringCodePart;
     }
 }

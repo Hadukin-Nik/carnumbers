@@ -5,16 +5,16 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
-import ru.hniapplications.testapplication.carnumbersapi.models.dtos.CarNumberDTO;
-import ru.hniapplications.testapplication.carnumbersapi.repository.NumberRepository;
+import ru.hniapplications.testapplication.carnumbersapi.models.entities.CarNumberEntity;
+import ru.hniapplications.testapplication.carnumbersapi.repositories.NumberRepository;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class NumbersService {
+public class CarNumberService implements ICarNumbersService{
     private final NumberRepository numberRepository;
-    private final CarNumberTreeSet carNumberTreeSet;
+    private final ICarNumberStructuredService carNumberStructuredService;
 
     private CarNumber lastCarNumber;
 
@@ -27,29 +27,23 @@ public class NumbersService {
             return random();
         }
 
-        lastCarNumber = carNumberTreeSet.addFirstEntry(lastCarNumber.next());
+        lastCarNumber = carNumberStructuredService.addFirstEntry(lastCarNumber.next());
 
-        numberRepository.save(new CarNumberDTO(lastCarNumber.toString()));
+        numberRepository.save(new CarNumberEntity(lastCarNumber.toString()));
 
         return lastCarNumber;
     }
 
     public CarNumber random() {
-        lastCarNumber = carNumberTreeSet.addFirstEntry(new CarNumber());
+        lastCarNumber = carNumberStructuredService.addFirstEntry(new CarNumber());
 
-        numberRepository.save(new CarNumberDTO(lastCarNumber.toString()));
+        numberRepository.save(new CarNumberEntity(lastCarNumber.toString()));
 
         return lastCarNumber;
     }
 
     @EventListener(ApplicationReadyEvent.class)
     public void init() {
-        List<CarNumber> carNumbers = getAllNumbers();
-
-        for (CarNumber carNumber : carNumbers) {
-            carNumberTreeSet.addCarNumber(carNumber);
-        }
-
-        carNumberTreeSet.setWarmedTrue();
+        carNumberStructuredService.init(getAllNumbers());
     }
 }

@@ -9,12 +9,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-public class EventNumbersServiceTest {
+public class EventCarNumberServiceTest {
     @Autowired
-    private CarNumberTreeSet carNumberTreeSet;
+    private CarNumberStructuredService carNumberStructuredService;
 
     @Test
     public void test_tree_set_load_from_repository() {
-        Assertions.assertTrue(carNumberTreeSet.isWarmed());
+        Assertions.assertTrue(carNumberStructuredService.isWarmed());
     }
 }

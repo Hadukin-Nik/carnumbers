@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
-import ru.hniapplications.testapplication.carnumbersapi.models.dtos.CarNumberDTO;
-import ru.hniapplications.testapplication.carnumbersapi.repository.NumberRepository;
+import ru.hniapplications.testapplication.carnumbersapi.models.entities.CarNumberEntity;
+import ru.hniapplications.testapplication.carnumbersapi.repositories.NumberRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +19,11 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class NumbersServiceTest {
+class CarNumberServiceTest {
     @MockBean
     private NumberRepository numberRepository;
     @MockBean
-    private CarNumberTreeSet carNumberTreeSet;
+    private CarNumberStructuredService carNumberStructuredService;
 
     @Test
     void get_all_numbers() {
@@ -31,14 +31,14 @@ class NumbersServiceTest {
         List<CarNumber> expectedList = new ArrayList<>();
         expectedList.add(new CarNumber("СВА", 399));
 
-        CarNumberDTO testObject = new CarNumberDTO();
+        CarNumberEntity testObject = new CarNumberEntity();
         testObject.setId(0L);
         testObject.setStringCode("С399ВА");
 
         when(numberRepository.findAll()).thenReturn(Arrays.asList(testObject));
         //Act
-        NumbersService numbersService = new NumbersService(numberRepository, carNumberTreeSet);
-        List<CarNumber> allNumbers = numbersService.getAllNumbers();
+        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
+        List<CarNumber> allNumbers = carNumberService.getAllNumbers();
         //Assert
         Assertions.assertEquals(expectedList, allNumbers);
     }
@@ -47,11 +47,11 @@ class NumbersServiceTest {
     void random_check() {
         //Arrange
         String expectedAns = "С399ВА";
-        when(carNumberTreeSet.addFirstEntry(any())).thenReturn(new CarNumber("СВА", 399));
+        when(carNumberStructuredService.addFirstEntry(any())).thenReturn(new CarNumber("СВА", 399));
         //Act
-        NumbersService numbersService = new NumbersService(numberRepository, carNumberTreeSet);
+        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
         //Assert
-        Assertions.assertNotNull(numbersService.random());
+        Assertions.assertNotNull(carNumberService.random());
     }
 
     @Test
@@ -59,12 +59,12 @@ class NumbersServiceTest {
         //Arrange
         CarNumber randomMock = new CarNumber("СВА",399);
         CarNumber nextMock = new CarNumber("СВА",400);
-        when(carNumberTreeSet.addFirstEntry(any())).thenReturn(randomMock);
-        when(carNumberTreeSet.addFirstEntry(nextMock)).thenReturn(nextMock);
+        when(carNumberStructuredService.addFirstEntry(any())).thenReturn(randomMock);
+        when(carNumberStructuredService.addFirstEntry(nextMock)).thenReturn(nextMock);
         //Act
-        NumbersService numbersService = new NumbersService(numberRepository, carNumberTreeSet);
-        numbersService.next();
+        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
+        carNumberService.next();
         //Assert
-        Assertions.assertEquals(nextMock, numbersService.next());
+        Assertions.assertEquals(nextMock, carNumberService.next());
     }
 }

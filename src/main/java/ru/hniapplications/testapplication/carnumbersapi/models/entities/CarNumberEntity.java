@@ -1,4 +1,4 @@
-package ru.hniapplications.testapplication.carnumbersapi.models.dtos;
+package ru.hniapplications.testapplication.carnumbersapi.models.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CarNumberDTO {
+public class CarNumberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,7 +18,7 @@ public class CarNumberDTO {
     @Column(name = "letters")
     private String stringCode;
 
-    public CarNumberDTO(String carNumber) {
+    public CarNumberEntity(String carNumber) {
         this.stringCode = carNumber;
     }
 }

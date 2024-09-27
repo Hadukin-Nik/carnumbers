@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class CarNumberTreeSetTest {
+class CarNumberStructuredServiceTest {
     @Test
     public void happy_path() {
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
 
         Assertions.assertNotNull(set);
     }
@@ -23,7 +23,7 @@ class CarNumberTreeSetTest {
 
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
         set.addCarNumber(carNumberL);
         set.addCarNumber(carNumberB);
         set.addCarNumber(carNumberR);
@@ -39,7 +39,7 @@ class CarNumberTreeSetTest {
 
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
         set.addCarNumber(carNumberL);
         set.addCarNumber(carNumberB);
         set.addCarNumber(carNumberR);
@@ -55,7 +55,7 @@ class CarNumberTreeSetTest {
 
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
         set.addCarNumber(carNumberL);
         set.addCarNumber(carNumberB);
         set.addCarNumber(carNumberR);
@@ -72,7 +72,7 @@ class CarNumberTreeSetTest {
 
         CarNumber mock = new CarNumber("СВВ", 305);
         //Act
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
         set.addCarNumber(carNumberL);
         set.addCarNumber(carNumberB);
         set.addCarNumber(carNumberR);
@@ -89,7 +89,7 @@ class CarNumberTreeSetTest {
 
         CarNumber mock = new CarNumber("СВВ", 200);
         //Act
-        CarNumberTreeSet set = new CarNumberTreeSet();
+        CarNumberStructuredService set = new CarNumberStructuredService();
         set.addCarNumber(carNumberL);
         set.addCarNumber(carNumberB);
         set.addCarNumber(carNumberR);
@@ -111,7 +111,7 @@ class CarNumberTreeSetTest {
                 for(int k = 0; k < carNumbers.length; k++) {
                     if(k != j && j != i && k != i) {
                         //Act
-                        CarNumberTreeSet set = new CarNumberTreeSet();
+                        CarNumberStructuredService set = new CarNumberStructuredService();
                         set.addCarNumber(carNumbers[0]);
                         set.addCarNumber(carNumbers[1]);
                         set.addCarNumber(carNumbers[2]);
