@@ -12,34 +12,41 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CarNumberService implements ICarNumbersService{
+public class CarNumberService implements ICarNumbersService {
     private final NumberRepository numberRepository;
     private final ICarNumberStructuredService carNumberStructuredService;
-
-    private CarNumber lastCarNumber;
 
     public List<CarNumber> getAllNumbers() {
         return numberRepository.findAll().stream().map(CarNumber::new).toList();
     }
 
+    public CarNumber getLastCarNumber() {
+        return new CarNumber(numberRepository.getLastMessage());
+    }
+
     public CarNumber next() {
-        if (lastCarNumber == null) {
-            return random();
+        CarNumber added = carNumberStructuredService.addFirstEntry(getLastCarNumber().next());
+
+        while(numberRepository.findByCarNumber(added.toSave()) != null) {
+            added = carNumberStructuredService.addFirstEntry(added.next());
         }
 
-        lastCarNumber = carNumberStructuredService.addFirstEntry(lastCarNumber.next());
+        numberRepository.saveAndFlush(new CarNumberEntity(added.toSave()));
 
-        numberRepository.save(new CarNumberEntity(lastCarNumber.toString()));
-
-        return lastCarNumber;
+        return added;
     }
 
     public CarNumber random() {
-        lastCarNumber = carNumberStructuredService.addFirstEntry(new CarNumber());
+        CarNumber toSave = new CarNumber();
+        while(numberRepository.findByCarNumber(toSave.toSave()) != null) {
+            toSave = new CarNumber();
+        }
 
-        numberRepository.save(new CarNumberEntity(lastCarNumber.toString()));
+        CarNumber added = carNumberStructuredService.addFirstEntry(toSave);
 
-        return lastCarNumber;
+        numberRepository.saveAndFlush(new CarNumberEntity(added.toSave()));
+
+        return added;
     }
 
     @EventListener(ApplicationReadyEvent.class)

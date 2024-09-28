@@ -86,7 +86,7 @@ public class CarNumber {
         int lettersSize = letters.size();
         if (integerCodePart == 999) {
             if (alphabeticCodePart == lettersSize * lettersSize * lettersSize - 1) {
-                throw new IllegalArgumentException("You cannot use car number more than X999XX");
+                throw new IllegalArgumentException("You cannot use cars numbers after X999XX");
             }
 
             return new CarNumber(alphabeticCodePart + 1, 0);
@@ -109,11 +109,13 @@ public class CarNumber {
 
     @Override
     public String toString() {
+        return toSave() + " " + constStringCodePart;
+    }
 
-
+    public String toSave() {
         String ansString = parseAlphabeticCodePartToString();
         String ansInteger = String.format("%03d", integerCodePart);
 
-        return ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2) + " " + constStringCodePart;
+        return ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2);
     }
 }

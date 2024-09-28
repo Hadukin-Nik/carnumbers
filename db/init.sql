@@ -4,7 +4,8 @@ alter database carnumbers owner to admin;
 
 create table carcodes (
     id bigserial primary key,
-    letters varchar(6)
+    letters varchar(6) unique,
+    date date
 );
 
 alter table carcodes owner to admin;
