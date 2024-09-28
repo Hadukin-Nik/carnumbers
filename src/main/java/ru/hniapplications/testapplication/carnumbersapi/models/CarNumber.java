@@ -12,7 +12,7 @@ public class CarNumber {
     private final String constStringCodePart = "116 RUS";
     private final List<Character> letters;
 
-    private int[] stringCodePart;
+    private int alphabeticCodePart;
     private int integerCodePart;
 
     public CarNumber() {
@@ -22,28 +22,24 @@ public class CarNumber {
 
         Collections.sort(letters);
 
+        int lettersSize = letters.size();
+
         Random random = new Random();
 
         integerCodePart = random.nextInt(1000);
 
-        stringCodePart = new int[3];
-        stringCodePart[0] = random.nextInt(letters.size());
-        stringCodePart[1] = random.nextInt(letters.size());
-        stringCodePart[2] = random.nextInt(letters.size());
+        alphabeticCodePart = random.nextInt(lettersSize * lettersSize * lettersSize);
     }
 
-    private CarNumber(int[] stringCodePart, int integerCodePart) {
+    private CarNumber(int alphabeticCodePart, int integerCodePart) {
         this();
-        this.stringCodePart = stringCodePart;
+        this.alphabeticCodePart = alphabeticCodePart;
         this.integerCodePart = integerCodePart;
     }
 
     public CarNumber(String sign, int integerCodePart) {
         this();
-        stringCodePart[0] = letters.indexOf(sign.charAt(0));
-        stringCodePart[1] = letters.indexOf(sign.charAt(1));
-        stringCodePart[2] = letters.indexOf(sign.charAt(2));
-
+        parseAlphabeticCodePartToInteger(sign);
         this.integerCodePart = integerCodePart;
     }
 
@@ -51,9 +47,7 @@ public class CarNumber {
         this();
         String sign = carNumberEntity.getStringCode();
 
-        stringCodePart[0] = letters.indexOf(sign.charAt(0));
-        stringCodePart[1] = letters.indexOf(sign.charAt(4));
-        stringCodePart[2] = letters.indexOf(sign.charAt(5));
+        parseAlphabeticCodePartToInteger("" + sign.charAt(0) + sign.charAt(4) + sign.charAt(5));
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -65,24 +59,39 @@ public class CarNumber {
         integerCodePart = Integer.parseInt(stringBuilder.toString());
     }
 
+    private void parseAlphabeticCodePartToInteger(String stringCodePart) {
+        int parsed = 0;
+        for (int i = 0; i < stringCodePart.length(); i++) {
+            int foundIndex = letters.indexOf(stringCodePart.charAt(i));
+            parsed = parsed * letters.size() + (foundIndex);
+        }
+        alphabeticCodePart = parsed;
+    }
+
+    private String parseAlphabeticCodePartToString() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int lettersSize = letters.size();
+
+        int buf = alphabeticCodePart;
+
+        stringBuilder.append(letters.get(buf / (lettersSize * lettersSize)));
+        stringBuilder.append(letters.get(buf % (lettersSize * lettersSize) / lettersSize));
+        stringBuilder.append(letters.get(buf % lettersSize));
+
+        return stringBuilder.toString();
+    }
 
     public CarNumber next() {
+        int lettersSize = letters.size();
         if (integerCodePart == 999) {
-            int[] newStringCodePart = Arrays.copyOf(stringCodePart, stringCodePart.length);
-
-            int i = stringCodePart.length - 1;
-            newStringCodePart[i]++;
-            for (; i > 0 && newStringCodePart[i] >= letters.size(); i--) {
-                newStringCodePart[i] = 0;
-                newStringCodePart[i - 1]++;
+            if (alphabeticCodePart == lettersSize * lettersSize * lettersSize - 1) {
+                throw new IllegalArgumentException("You cannot use car number more than X999XX");
             }
 
-            if (newStringCodePart[0] >= letters.size()) {
-                newStringCodePart[0] = 0;
-            }
-            return new CarNumber(newStringCodePart, 0);
+            return new CarNumber(alphabeticCodePart + 1, 0);
         } else {
-            return new CarNumber(stringCodePart, integerCodePart + 1);
+            return new CarNumber(alphabeticCodePart, integerCodePart + 1);
         }
     }
 
@@ -100,15 +109,11 @@ public class CarNumber {
 
     @Override
     public String toString() {
-        StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i : stringCodePart) {
-            stringBuilder.append(letters.get(i));
-        }
 
-        String ansString = stringBuilder.toString();
+        String ansString = parseAlphabeticCodePartToString();
         String ansInteger = String.format("%03d", integerCodePart);
 
-        return "" + ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2) + " " + constStringCodePart;
+        return ansString.charAt(0) + ansInteger + ansString.charAt(1) + ansString.charAt(2) + " " + constStringCodePart;
     }
 }

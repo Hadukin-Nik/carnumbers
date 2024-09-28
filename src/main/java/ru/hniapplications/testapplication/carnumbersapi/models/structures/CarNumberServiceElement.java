@@ -21,23 +21,10 @@ public class CarNumberServiceElement implements Comparable {
 
     public int compareTo(Object o) {
         if ((o instanceof CarNumberServiceElement obj)) {
-            int[] stringCodePart = value.getStringCodePart();
-            int integerCodePart = value.getIntegerCodePart();
-
-            int[] oStringCodePart = obj.getValue().getStringCodePart();
-            int oIntegerCodePart = obj.getValue().getIntegerCodePart();
-
-            if (Arrays.compare(stringCodePart, oStringCodePart) == 0) {
-                return Integer.compare(integerCodePart, oIntegerCodePart);
+            if(value.getAlphabeticCodePart() == obj.value.getAlphabeticCodePart()) {
+                return Integer.compare(value.getIntegerCodePart(), obj.value.getIntegerCodePart());
             } else {
-                for (int i = 0; i < stringCodePart.length; i++) {
-                    if (stringCodePart[i] > oStringCodePart[i]) {
-                        return 1;
-                    } else if (stringCodePart[i] < oStringCodePart[i]) {
-                        return -1;
-                    }
-                }
-                return 0;
+                return Integer.compare(value.getAlphabeticCodePart(), obj.value.getAlphabeticCodePart());
             }
         }
         return 0;
