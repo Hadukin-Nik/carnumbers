@@ -8,7 +8,7 @@ import ru.hniapplications.testapplication.carnumbersapi.models.entities.CarNumbe
 
 @Repository
 @Table(name = "messages")
-public interface NumberRepository extends JpaRepository<CarNumberEntity, Long> {
+public interface CarNumberRepository extends JpaRepository<CarNumberEntity, Long> {
     @Query(value = "Select * from carcodes order by date limit 1", nativeQuery = true)
     public CarNumberEntity getLastMessage();
 

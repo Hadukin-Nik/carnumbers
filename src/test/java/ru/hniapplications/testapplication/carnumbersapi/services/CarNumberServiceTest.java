@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
 import ru.hniapplications.testapplication.carnumbersapi.models.entities.CarNumberEntity;
-import ru.hniapplications.testapplication.carnumbersapi.repositories.NumberRepository;
+import ru.hniapplications.testapplication.carnumbersapi.repositories.CarNumberRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class CarNumberServiceTest {
     @MockBean
-    private NumberRepository numberRepository;
+    private CarNumberRepository carNumberRepository;
     @MockBean
     private CarNumberStructuredService carNumberStructuredService;
 
@@ -35,9 +35,9 @@ class CarNumberServiceTest {
         testObject.setId(0L);
         testObject.setStringCode("С399ВА");
 
-        when(numberRepository.findAll()).thenReturn(Arrays.asList(testObject));
+        when(carNumberRepository.findAll()).thenReturn(Arrays.asList(testObject));
         //Act
-        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
+        CarNumberService carNumberService = new CarNumberService(carNumberRepository, carNumberStructuredService);
         List<CarNumber> allNumbers = carNumberService.getAllNumbers();
         //Assert
         Assertions.assertEquals(expectedList, allNumbers);
@@ -49,7 +49,7 @@ class CarNumberServiceTest {
         String expectedAns = "С399ВА";
         when(carNumberStructuredService.addFirstEntry(any())).thenReturn(new CarNumber("СВА", 399));
         //Act
-        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
+        CarNumberService carNumberService = new CarNumberService(carNumberRepository, carNumberStructuredService);
         //Assert
         Assertions.assertNotNull(carNumberService.random());
     }
@@ -62,7 +62,7 @@ class CarNumberServiceTest {
         when(carNumberStructuredService.addFirstEntry(any())).thenReturn(randomMock);
         when(carNumberStructuredService.addFirstEntry(nextMock)).thenReturn(nextMock);
         //Act
-        CarNumberService carNumberService = new CarNumberService(numberRepository, carNumberStructuredService);
+        CarNumberService carNumberService = new CarNumberService(carNumberRepository, carNumberStructuredService);
         carNumberService.next();
         //Assert
         Assertions.assertEquals(nextMock, carNumberService.next());
