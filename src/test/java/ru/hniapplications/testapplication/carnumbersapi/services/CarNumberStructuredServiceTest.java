@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import ru.hniapplications.testapplication.carnumbersapi.models.CarNumber;
 
+import java.util.List;
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class CarNumberStructuredServiceTest {
     @Test
@@ -24,9 +26,8 @@ class CarNumberStructuredServiceTest {
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
         CarNumberStructuredService set = new CarNumberStructuredService();
-        set.addCarNumber(carNumberL);
-        set.addCarNumber(carNumberB);
-        set.addCarNumber(carNumberR);
+        set.init(List.of(carNumberL, carNumberB, carNumberR));
+
         //Assert
         Assertions.assertEquals(expectedCarNumber, set.addFirstEntry(carNumberL));
     }
@@ -40,9 +41,8 @@ class CarNumberStructuredServiceTest {
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
         CarNumberStructuredService set = new CarNumberStructuredService();
-        set.addCarNumber(carNumberL);
-        set.addCarNumber(carNumberB);
-        set.addCarNumber(carNumberR);
+        set.init(List.of(carNumberL, carNumberB, carNumberR));
+
         //Assert
         Assertions.assertEquals(expectedCarNumber, set.addFirstEntry(carNumberB));
     }
@@ -56,9 +56,7 @@ class CarNumberStructuredServiceTest {
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
         //Act
         CarNumberStructuredService set = new CarNumberStructuredService();
-        set.addCarNumber(carNumberL);
-        set.addCarNumber(carNumberB);
-        set.addCarNumber(carNumberR);
+        set.init(List.of(carNumberL, carNumberB, carNumberR));
         //Assert
         Assertions.assertEquals(expectedCarNumber, set.addFirstEntry(carNumberR));
     }
@@ -73,9 +71,8 @@ class CarNumberStructuredServiceTest {
         CarNumber mock = new CarNumber("СВВ", 305);
         //Act
         CarNumberStructuredService set = new CarNumberStructuredService();
-        set.addCarNumber(carNumberL);
-        set.addCarNumber(carNumberB);
-        set.addCarNumber(carNumberR);
+        set.init(List.of(carNumberL, carNumberB, carNumberR));
+
         //Assert
         Assertions.assertEquals(mock, set.addFirstEntry(mock));
     }
@@ -90,9 +87,8 @@ class CarNumberStructuredServiceTest {
         CarNumber mock = new CarNumber("СВВ", 200);
         //Act
         CarNumberStructuredService set = new CarNumberStructuredService();
-        set.addCarNumber(carNumberL);
-        set.addCarNumber(carNumberB);
-        set.addCarNumber(carNumberR);
+        set.init(List.of(carNumberL, carNumberB, carNumberR));
+
         //Assert
         Assertions.assertEquals(mock, set.addFirstEntry(mock));
     }
@@ -106,20 +102,25 @@ class CarNumberStructuredServiceTest {
         carNumbers[2] = new CarNumber("СВВ", 302);
 
         CarNumber expectedCarNumber = new CarNumber("СВВ", 303);
+
+        boolean isThereAnError = false;
         for(int i = 0; i < carNumbers.length; i++) {
             for(int j = 0; j < carNumbers.length; j++) {
                 for(int k = 0; k < carNumbers.length; k++) {
                     if(k != j && j != i && k != i) {
                         //Act
                         CarNumberStructuredService set = new CarNumberStructuredService();
-                        set.addCarNumber(carNumbers[0]);
-                        set.addCarNumber(carNumbers[1]);
-                        set.addCarNumber(carNumbers[2]);
+                        set.init(List.of(carNumbers[0], carNumbers[1], carNumbers[2]));
+
                         //Assert
-                        Assertions.assertEquals(expectedCarNumber, set.addFirstEntry(carNumbers[i]));
+                        if(!expectedCarNumber.equals(set.addFirstEntry(carNumbers[i]))) {
+                            isThereAnError = true;
+                        }
                     }
                 }
             }
         }
+
+        Assertions.assertFalse(isThereAnError);
     }
 }

@@ -10,9 +10,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class CarNumberTest {
     @Test
+    void transformation_number() {
+        //Arrange
+        String expectedAns = "А000АА 116 RUS";
+        //Act
+        CarNumber carNumber = new CarNumber("ААА", 0);
+        String ans = carNumber.toString();
+        //Assert
+        assertEquals(expectedAns, ans);
+    }
+
+    @Test
     void next_alphabetic_case() {
         //Arrange
-        String expectedAns = "С000ВВ";
+        String expectedAns = "С000ВВ 116 RUS";
         //Act
         CarNumber carNumber = new CarNumber("СВА", 999);
         String ans = carNumber.next().toString();
@@ -23,7 +34,7 @@ class CarNumberTest {
     @Test
     void next_alphabetic_case_2() {
         //Arrange
-        String expectedAns = "Т000АА";
+        String expectedAns = "Т000АА 116 RUS";
         //Act
         CarNumber carNumber = new CarNumber("СХХ", 999);
         String ans = carNumber.next().toString();
@@ -34,7 +45,7 @@ class CarNumberTest {
     @Test
     void next_alphabetic_case_3() {
         //Arrange
-        String expectedAns = "С000ХХ";
+        String expectedAns = "С000ХХ 116 RUS";
         //Act
         CarNumber carNumber = new CarNumber("СХУ", 999);
         String ans = carNumber.next().toString();
@@ -45,7 +56,7 @@ class CarNumberTest {
     @Test
     void next_numeric_case() {
         //Arrange
-        String expectedAns = "С400ВА";
+        String expectedAns = "С400ВА 116 RUS";
         //Act
         CarNumber carNumber = new CarNumber("СВА", 399);
         String ans = carNumber.next().toString();
